@@ -1,4 +1,4 @@
-Author: Danylo Dotsenko
+Author: Danylo Dotsenko <br>
 Project: JavaHub
 Date: March 12, 2018
 Description: JavaHub is an integrated webapp that visually outputs local cafes within a certain vicinity/neighbourhood 
