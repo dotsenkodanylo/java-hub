@@ -30,7 +30,7 @@ text-decoration: none;
     overflow-x: hidden; /* Disable horizontal scroll */
     padding-top: 20px; /* Place content 60px from the top */
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */   
-    background-color: #331a00
+    background-image: linear-gradient(to bottom right, #663300 ,#1a0d00 );
 
 }
 #over h2{
