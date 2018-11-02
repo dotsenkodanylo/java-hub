@@ -278,7 +278,7 @@ label {
     </div>
 <script>
 var open = false;
-
+var menu2arr = new Array();
 function navControl() {
   if (open == false){
   document.getElementById("over").style.width = "20%";
@@ -335,7 +335,7 @@ function navControl() {
     function getJSONMarkers() {
       var x = fix();
       var markers = JSON.parse(x);
-          console.log(markers);        
+          console.log(markers.name);        
           return markers;
         }
       function initMap() {
@@ -486,7 +486,6 @@ function navControl() {
 if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
             var pos = {
-              
               lat: position.coords.latitude,
               lng: position.coords.longitude,
             };
@@ -516,7 +515,7 @@ if (navigator.geolocation) {
         var check;
 
         var posMarkers = {};
-        for(cafe of coffeeMarkers) {
+        for(cafe of coffeeMarkers) {                                    //Loop through ALL entries; if need to make array of names, here is where to extract a singular variable
               let marker = new google.maps.Marker({
               map: map,
               position: new google.maps.LatLng(cafe.location[0], cafe.location[1]),
@@ -526,6 +525,8 @@ if (navigator.geolocation) {
               icon: 'bean2.png',
               meta: cafe.nhid,                  //extracting neighbourhood id into marker tag 
           });
+              menu2arr.push(cafe.name);
+              //console.log(cafe.name);
               marker.addListener('click', function() {
                 //console.log(marker.meta);       extracting the neighbourhood id
                 //map.setZoom(15);
@@ -559,7 +560,7 @@ if (navigator.geolocation) {
                 map.panTo(latLng);
                 map.setZoom(15);
                 marker.setAnimation(google.maps.Animation.DROP);                
-                if (check == marker.meta){
+                if (check == marker.meta){                      //If the neighbour box is checked, set all the markers (cafes) with the id of the neighbourhood to visible
                    marker.setVisible(true);
                 }    
                 } else {
@@ -572,26 +573,6 @@ if (navigator.geolocation) {
               }
        });
             }
-          /*
-            var checkbox = document.querySelector("input[name=choice]");
-            //modify to be selective 
-            checkbox.addEventListener('change', function runner(){
-              if(this.checked){
-               /* console.log(this.id);                         //extract id of checkbox
-                console.log(marker.meta);                     //extract tag of markers!
-                //console.log(parseInt(this.id));
-                var latLng = new google.maps.LatLng(43.646316, -79.44905);
-                map.panTo(latLng);
-                map.setZoom(14);
-                marker.setAnimation(google.maps.Animation.DROP);
-                check = parseInt(this.id);
-                if (check == marker.meta){
-                   marker.setVisible(true);
-                }                    
-                } else {
-                marker.setVisible(false);
-              }
-            });*/
         
       }
         map.mapTypes.set('styled_map', styledMapType);
@@ -604,8 +585,7 @@ if (navigator.geolocation) {
       /*var arr = '<?php echo json_encode($posts); ?>';  //if alert arr, outputs json string 
       //var fix = JSON.parse(arr);*/
     }
-
-    
+    console.log(menu2arr);   
     </script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGPhu1XonG82a8PPIGbX_554Mhqo7wvJU&callback=initMap">    

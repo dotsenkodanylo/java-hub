@@ -8,6 +8,8 @@ include 'round.php';
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond" rel="stylesheet">
+
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <style>
     a {
@@ -28,7 +30,8 @@ text-decoration: none;
     overflow-x: hidden; /* Disable horizontal scroll */
     padding-top: 20px; /* Place content 60px from the top */
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */   
-    background-color:#63cdda
+    background-color: #331a00
+
 }
 #over h2{
     color: #02c8a7;
@@ -193,7 +196,8 @@ label {
   padding: 0;
   list-style: none;
   width: 100%;
-  font-family: "Avenir", sans-serif;
+  font-family: "Cormorant Garamond", sans-serif;
+  font-size: 1.35vw;
 }
 
 .hiddenCB input[type="checkbox"],
@@ -210,7 +214,7 @@ label {
 }
 
 .hiddenCB input[type="checkbox"]+label:hover{
-  background: #574999;
+  background: #b35900;
   color: #fff;
 }
 
@@ -241,13 +245,16 @@ label {
   text-align: left;
   height: 100%;
   display: inline-block;
-  font-family: 'Helvetica Neue';
+  font-family: 'Cormorant Garamond';
+  font-weight: bold;
+  font-size: 1.35vw;
   cursor: pointer;
   transition: all 0.5s ease;
   left: 300px;
  }
 .menuBtn:hover {
-  background-color: #574999;
+  background-color:#b35900
+;
  }
 .menuBtn:before {
   background-color: 
@@ -362,6 +369,9 @@ color: black;
  
 
   </div>
+  <div id="menu2">
+    
+  </div>
 </div>
       <!--<label class="menuItem" id="cafe"><input type="checkbox" id="ronc" name="checkbox"/><a>Roncesvalles</a></label>-->
     
@@ -399,13 +409,14 @@ function menuControl(menu){
   var arr = document.querySelectorAll('.menuBtn');
   
   for (i = 0;i < arr.length; i++){
+      arr[i].style.opacity = "0";
       arr[i].style.marginLeft = "-54%";
         
   }
 
   document.getElementById(menu).style = 'inherit';
   document.getElementById(menu).style.marginLeft = "100%";
-  document.getElementById(menu).style.backgroundColor = '#574999';  
+  document.getElementById(menu).style.backgroundColor = '#b35900';  
   document.getElementById(menu).style.height = "100%";
   document.getElementById("left").style.visibility = 'visible';
   document.getElementById("catSelect").innerHTML = document.getElementById(menu).innerHTML;
@@ -414,7 +425,9 @@ function menuControl(menu){
     //document.getElementById("menu1").style.visibility = 'visible';
     document.getElementById("menu1").style.marginTop = '0';
     document.getElementById("menu1").style.opacity = '1.0';  
-  } 
+  } else if(menu == "btn2"){
+  console.log("List cafes bro");
+}
     
   
   selected = true; 
@@ -426,7 +439,7 @@ function menuControl(menu){
   
   document.getElementById(menu).style.marginLeft = "0";
   document.getElementById(menu).style = 'inherit';
-  document.getElementById("catSelect").innerHTML = "Select search method below";
+  document.getElementById("catSelect").innerHTML = "Search by:";
   var arr = document.querySelectorAll('.menuBtn');
 
 
