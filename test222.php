@@ -307,10 +307,8 @@ color: black;
 #buttons {
   position: absolute;
 }
-
 </style>
-
-  </head>
+</head>
   <body>
         
   <div id="bar"><span class="to-top" onclick="navControl()" id="sideNav"></span></div>
@@ -373,15 +371,11 @@ color: black;
     
   </div>
 </div>
-      <!--<label class="menuItem" id="cafe"><input type="checkbox" id="ronc" name="checkbox"/><a>Roncesvalles</a></label>-->
-    
-      
-      
-    </div>
+</div>
 <script>
 var open = false;
 var selected = false; 
-
+var menu2arr = new Array();/*
  var scrollTop = $(window).scrollTop(),
  elementOffset = $('#btn1').offset().top,
  distance = (elementOffset - scrollTop);
@@ -448,9 +442,303 @@ function menuControl(menu){
   }
   selected = false; 
   }
+}*/
+function fix(){     //$str = json string, parse and destroy quotes near square bracks 
+    var str = '<?php echo json_encode($posts); ?>';  //if alert arr, outputs json string 
+    var one, two;       
+      for(var i = 0; i < str.length; i++) {
+          one = str.charAt(i);
+          two = str.charAt(i + 1);
+          if (one == "\"" && two == "["){
+            //alert(str.charAt(i+2));
+            str = str.slice(0, i) + str.slice(i+1, str.length);
+          }
+          if (one == "]" && two =="\""){
+            str = str.slice(0, i+1) + str.slice(i+2, str.length);
+          }
+      }
+      return str; 
+    }
+    function fix2(){     //$str = json string, parse and destroy quotes near square bracks 
+    var str = '<?php echo json_encode($response); ?>';  //if alert arr, outputs json string 
+    var one, two;       
+      for(var i = 0; i < str.length; i++) {
+          one = str.charAt(i);
+          two = str.charAt(i + 1);
+          if (one == "\"" && two == "["){
+            //alert(str.charAt(i+2));
+            str = str.slice(0, i) + str.slice(i+1, str.length);
+          }
+          if (one == "]" && two =="\""){
+            str = str.slice(0, i+1) + str.slice(i+2, str.length);
+          }
+      }
+      return str; 
+    }
+
+    function getJSONeighbourhoods(){
+        var n = fix2();
+        var hoods = JSON.parse(n);
+        console.log(hoods);
+        return hoods;
+    }
+
+    function getJSONMarkers() {
+      var x = fix();
+      var markers = JSON.parse(x);
+          console.log(markers.name);        
+          return markers;
+        }
+      function initMap() {
+        var styledMapType = new google.maps.StyledMapType(
+[
+    {
+        "featureType": "administrative",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "on"
+            },
+            {
+                "lightness": 33
+            }
+        ]
+    },
+    {
+        "featureType": "landscape",
+        "elementType": "all",
+        "stylers": [
+            {
+                "color": "#f2e5d4"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.park",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#c5dac6"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.park",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "visibility": "on"
+            },
+            {
+                "lightness": 20
+            }
+        ]
+    },
+    {
+        "featureType": "road",
+        "elementType": "all",
+        "stylers": [
+            {
+                "lightness": 20
+            }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#c5c6c6"
+            }
+        ]
+    },
+    {
+        "featureType": "road.arterial",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#e4d7c6"
+            }
+        ]
+    },
+    {
+        "featureType": "road.local",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#fbfaf7"
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "on"
+            },
+            {
+                "color": "#acbcc9"
+            }
+        ]
+    },
+
+  
+              {
+            "featureType": 'poi.business',
+            "elementType": 'labels.icon',
+            "stylers": [{"visibility": 'off'}]
+              },
+            {
+            "featureType": 'highway',
+            "elementType": 'labels.icon',
+            "stylers": [{"visibility": 'off'}]
+              },
+  
+            {
+            "featureType": 'transit',
+            "elementType": 'labels.con',
+            "stylers": [{"visibility": 'off'}]
+            },
+  {
+    "featureType": "water",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#4e6d70"
+      }
+    ]
+  },
+  {
+        "featureType": "poi",
+        "elementType": "labels",
+        "stylers": [
+              { visibility: "off" }
+        ]
+    }
+  
+          ],
+            {name: 'Styled Map'});
+        const coffeeMarkers = getJSONMarkers();
+        const neighHoods = getJSONeighbourhoods();  
+        var infowindow = new google.maps.InfoWindow({});
+        var boxes = document.getElementsByName('choice');
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 43.653, lng: -79.383},
+          zoom: 12,
+          fullscreenControl:false,
+          streetViewControl: false,
+          zoomControl: true,
+          mapTypeControlOptions: {
+            mapTypeIds: ['']
+          }
+   
+ });
+if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            };
+            let marker = new google.maps.Marker({
+              map: map,
+              position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
+              visible: true,
+              title: '<h1 style="font-family:helvetica neue;font-weight:200;">You!</h1>',
+            });
+
+            marker.addListener('click', function() {
+                //console.log(marker.meta);       extracting the neighbourhood id
+                //map.setZoom(15);
+                map.panTo(marker.getPosition());
+                infowindow.setContent(marker.title);
+                infowindow.open(map, this);  
+              });   
+
+            map.setCenter(marker.getPosition());
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } 
+        google.maps.event.addListenerOnce(map, 'idle', function(){
+          //alert("Loaded");              //checking if map loaded, works
+        });
+        var check;
+
+        var posMarkers = {};
+        for(cafe of coffeeMarkers) {                                    //Loop through ALL entries; if need to make array of names, here is where to extract a singular variable
+              let marker = new google.maps.Marker({
+              map: map,
+              position: new google.maps.LatLng(cafe.location[0], cafe.location[1]),
+              title: cafe.name,
+              content: cafe.address + "<br>" + "<a href='" + cafe.page + "'target='_blank'>Homepage</a>",
+              visible: false,
+              icon: 'bean2.png',
+              meta: cafe.nhid,                  //extracting neighbourhood id into marker tag 
+          });
+              menu2arr.push(cafe.name);
+              //console.log(cafe.name);
+              marker.addListener('click', function() {
+                //console.log(marker.meta);       extracting the neighbourhood id
+                //map.setZoom(15);
+                map.panTo(marker.getPosition());
+                infowindow.setContent(marker.title + "<br>" + marker.content);
+                infowindow.open(map, this);  
+              });   
+          
+            for(var i = 0; i < boxes.length; ++i)
+            {
+              
+              /*if(boxes[i].checked){
+                
+              }*/
+                var checkbox = boxes[i];
+                checkbox.addEventListener('change', function runner(){
+               if(this.checked){
+               //console.log(this.id);                         //extract id of checkbox
+                //console.log(marker.meta);                     //extract tag of markers!
+                //console.log(parseInt(this.id));*/
+                check = parseInt(this.id);
+
+                for(hood of neighHoods) {
+                  if(hood.nhid == check){
+                    var latLng = new google.maps.LatLng(hood.location[0], hood.location[1]);
+                    //var latLong = new google.maps.LatLng(hood.location[0], hood.location[1]);
+                    //console.log(latLong);
+                  }
+                }
+                //var latLng = new google.maps.LatLng(43.646316, -79.44905); //fix panTo for each neighbourhood 
+                map.panTo(latLng);
+                map.setZoom(15);
+                marker.setAnimation(google.maps.Animation.DROP);                
+                if (check == marker.meta){                      //If the neighbour box is checked, set all the markers (cafes) with the id of the neighbourhood to visible
+                   marker.setVisible(true);
+                }    
+                } else {
+                check = parseInt(this.id);
+                if (check == marker.meta){
+                   marker.setVisible(false);
+                   infowindow.close();
+                }   
+                //marker.setVisible(false);
+              }
+       });
+            }
+        
+      }
+        map.mapTypes.set('styled_map', styledMapType);
+        map.setMapTypeId('styled_map');
+  
 }
-      </script>
-    </body>
-</html>
-
-
+    function hide(){
+      var x = document.getElementById("map");
+      x.style.display = "none";
+      /*var arr = '<?php echo json_encode($posts); ?>';  //if alert arr, outputs json string 
+      //var fix = JSON.parse(arr);*/
+    }
+    console.log(menu2arr);   
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGPhu1XonG82a8PPIGbX_554Mhqo7wvJU&callback=initMap">    
+</script>
+</script>

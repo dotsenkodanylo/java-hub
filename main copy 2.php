@@ -9,6 +9,8 @@ include 'round.php';
     <meta charset="utf-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond" rel="stylesheet">
+
     <style>
     a {
 text-decoration: none;
@@ -16,18 +18,20 @@ text-decoration: none;
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
    #over 
-   { position: absolute;
+   { position: relative;
     height: 100%; /* 100% Full-height */
     width: 0; /* 0 width - change this with JavaScript */
     position: fixed; /* Stay in place */
     z-index: 1; /* Stay on top */
     top: 0; /* Stay at the top */
     left: 0;
+    color: white;
     /*background-color: #fff; /* Black*/
     overflow-x: hidden; /* Disable horizontal scroll */
     padding-top: 20px; /* Place content 60px from the top */
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */   
-    background-color:rgba(255, 255, 255, 1.0)
+    background-image: linear-gradient(to bottom right, #663300 ,#1a0d00 );
+
 }
 #over h2{
     color: #02c8a7;
@@ -41,6 +45,8 @@ text-decoration: none;
     transition: 0.3s;
     overflow: hidden;
     white-space: nowrap;
+    -webkit-text-stroke-width: 0.1px;
+   -webkit-text-stroke-color: white;
 }
     #map {
         height: 100%;
@@ -182,7 +188,6 @@ label {
   display: block;
   width: 80px;
   white-space: nowrap;
-
 }
 
 .hiddenCB div {
@@ -191,7 +196,8 @@ label {
   padding: 0;
   list-style: none;
   width: 100%;
-  font-family: "Avenir", sans-serif;
+  font-family: "Cormorant Garamond", sans-serif;
+  font-size: 1.35vw;
 }
 
 .hiddenCB input[type="checkbox"],
@@ -208,7 +214,7 @@ label {
 }
 
 .hiddenCB input[type="checkbox"]+label:hover{
-  background: rgba(2, 200, 167, .8);
+  background: #b35900;
   color: #fff;
 }
 
@@ -222,6 +228,63 @@ label {
   overflow: hidden;
 
 }    
+#menuSelectors {
+  overflow: hidden;
+    white-space: nowrap; 
+}
+#menu1 {
+  transition: all ease-in-out 0.5s;
+  margin-top: 80%;
+    opacity: 0;
+  position: absolute;
+}
+.menuBtn {
+  transition: background-color 0.4s ease;
+  transition: color 0.4 ease;
+  width: 100%;
+  text-align: left;
+  height: 100%;
+  display: inline-block;
+  font-family: 'Cormorant Garamond';
+  font-weight: bold;
+  font-size: 1.35vw;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  left: 300px;
+ }
+.menuBtn:hover {
+  background-color:#b35900
+;
+ }
+.menuBtn:before {
+  background-color: 
+}
+#catSelect {
+  margin: 0;
+  text-align: center;
+  overflow-x: hidden;
+  white-space: nowrap;  
+}
+#main {
+  display: inline-block;
+  vertical-align: middle;
+   text-align: center;
+}
+#left {
+  margin: 0;
+  text-align: center;
+  overflow-x: hidden;
+  white-space: nowrap;
+  visibility:hidden;
+}
+#left:hover {
+  color: #e74c3c;
+}
+#buttons {
+  position: absolute;
+}
+
+ 
 </style>
 
 
@@ -233,9 +296,23 @@ label {
 
     <div id="over">
       <h2>JAVAHub</h2>
+      <h3 id="catSelect">Select Search Method</h3>
+      <h3 id="left" onclick="menuControl(this.id);">Back</h3>
+      
+      <div id="buttons">
+          <label class="menuBtn" id="btn1" onclick="menuControl(this.id)">Search By Area</label>
+          <label class="menuBtn" id="btn2" onclick="menuControl(this.id)">Search By Cafe</label>
+          <label class="menuBtn" id="btn3" onclick="menuControl(this.id)">Search By Point</label>
+          <label class="menuBtn" id="btn4" onclick="menuControl(this.id)">Search for Near Me</label>
+          
+          
+
+      </div>
+
+
       <div class="hiddenCB">
 
-  <div>
+  <div id="menu1">
     <input type="checkbox" name="choice" id="1cb" /><label for="1cb">Roncesvalles (1)</label>
     <input type="checkbox" name="choice" id="2cb" /><label for="2cb">Bloor West Village (2)</label>
     <input type="checkbox" name="choice" id="3cb" /><label for="3cb">Bloordale & Bloorcourt<br>Village (3)</label>
@@ -278,6 +355,8 @@ label {
     </div>
 <script>
 var open = false;
+var selected = false; 
+
 var menu2arr = new Array();
 function navControl() {
   if (open == false){
@@ -292,6 +371,58 @@ function navControl() {
     open = false;
 }
 }
+
+
+function func(elem){elem.style.visibility = "hidden";}
+function menuControl(menu){
+
+  if (selected == false){
+
+  var arr = document.querySelectorAll('.menuBtn');
+  
+  for (i = 0;i < arr.length; i++){
+      arr[i].style.opacity = "0";
+      arr[i].style.marginLeft = "-54%";
+        
+  }
+
+  document.getElementById(menu).style = 'inherit';
+  document.getElementById(menu).style.marginLeft = "100%";
+  document.getElementById(menu).style.backgroundColor = '#b35900';  
+  document.getElementById(menu).style.height = "100%";
+  document.getElementById("left").style.visibility = 'visible';
+  document.getElementById("catSelect").innerHTML = document.getElementById(menu).innerHTML;
+  
+  if(menu == "btn1"){
+    //document.getElementById("menu1").style.visibility = 'visible';
+    document.getElementById("menu1").style.marginTop = '0';
+    document.getElementById("menu1").style.opacity = '1.0';  
+  } else if(menu == "btn2"){
+  console.log("List cafes bro");
+}
+    
+  
+  selected = true; 
+
+  } else {
+
+  document.getElementById("menu1").style.opacity = '0';
+  document.getElementById("menu1").style.marginTop = '80%';
+  
+  document.getElementById(menu).style.marginLeft = "0";
+  document.getElementById(menu).style = 'inherit';
+  document.getElementById("catSelect").innerHTML = "Search by:";
+  var arr = document.querySelectorAll('.menuBtn');
+
+
+
+  for (i = 0;i < arr.length; i++){
+      arr[i].style = 'inherit';
+  }
+  selected = false; 
+  }
+}
+
   function fix(){     //$str = json string, parse and destroy quotes near square bracks 
     var str = '<?php echo json_encode($posts); ?>';  //if alert arr, outputs json string 
     var one, two;       
